@@ -20,7 +20,6 @@
         <module>ApiGateway</module>
         <module>AuthService</module>
         <module>UsersService</module>
-        <module>ProjectService</module>
     </modules>
 
 </project>
