@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9092,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+
+  auth:
+    build:
+      context: ../AuthService
+      dockerfile: ../AuthService/Dockerfile
+    ports:
+      - "${AUTH_SERVER_PORT}:${AUTH_SERVER_PORT}"
+    environment:
+      spring.datasource.url: ${DATABASE_URL_AUTH}
+      spring.datasource.username: ${POSTGRES_USER}
+      spring.datasource.password: ${POSTGRES_PASSWORD}
+      server.port: ${AUTH_SERVER_PORT}
+      KAFKA_BOOTSTRAP_SERVER: ${KAFKA_BOOTSTRAP_SERVER}
+      jwt.secret: ${JWT_SECRET}
+      JWT_ACCESS_LIFE: ${JWT_ACCESS_LIFE}
+      JWT_REFRESH_LIFE: ${JWT_REFRESH_LIFE}
+    depends_on:
+      - postgres
+
+
+  users:
+    build:
+      context: ../UsersService
+      dockerfile: ../UsersService/Dockerfile
+    ports:
+      - "${USERS_SERVER_PORT}:${USERS_SERVER_PORT}"
+
+    environment:
+      PATH_TO_FIRE: /usr/src/app/messenger-4c416-firebase-adminsdk-4vygk-6e991a8920.json
+      spring.datasource.url: ${DATABASE_URL_USERS}
+      spring.datasource.username: ${POSTGRES_USER}
+      spring.datasource.password: ${POSTGRES_PASSWORD}
+      server.port: ${USERS_SERVER_PORT}
+      KAFKA_BOOTSTRAP_SERVER: ${KAFKA_BOOTSTRAP_SERVER}
+      NAME_BUCKET: ${NAME_BUCKET}
+      PATH_TO_DEFAULT_AVATAR: ${PATH_TO_DEFAULT_AVATAR}
+    depends_on:
+      - postgres
+
+  api:
+    build:
+      context: ../ApiGateway
+      dockerfile: ../ApiGateway/Dockerfile
+    container_name: api
+    ports:
+      - "${API_SERVER_PORT}:${API_SERVER_PORT}"
+    environment:
+      server.port: ${API_SERVER_PORT}
+
+volumes:
+  pgdata:
