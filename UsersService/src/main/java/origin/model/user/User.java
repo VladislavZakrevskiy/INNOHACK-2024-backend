@@ -29,6 +29,8 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    private String image;
+
     private String fullName;
     public User(String password, String username, String email, String fullName) {
         this.password = password;

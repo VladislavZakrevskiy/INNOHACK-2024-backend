@@ -8,16 +8,16 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: create-chat
-          uri: http://chats:8085
+        - id: create-project
+          uri: http://project:8085
           predicates:
-            - Path=/chats
+            - Path=/project
             - Method=POST
 
-        - id: all-chats-route
-          uri: http://chats:8085
+        - id: all-chats
+          uri: http://project:8085
           predicates:
-            - Path=/chats
+            - Path=/project
             - Method=GET
 
         - id: get-definite-chat

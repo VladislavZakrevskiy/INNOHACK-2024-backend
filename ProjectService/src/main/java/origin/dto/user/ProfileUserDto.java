@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ProfileUserDto  {
+public class ProfileUserDto {
     private Long id;
 
     private String username;
@@ -17,4 +17,5 @@ public class ProfileUserDto  {
     private String fullName;
 
     private String image;
+
 }

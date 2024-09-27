@@ -1,2 +1,3 @@
-CREATE DATABASE messenger_users;
-CREATE DATABASE messenger_auth;
+CREATE DATABASE users_db;
+CREATE DATABASE auth_db;
+CREATE DATABASE project_db;

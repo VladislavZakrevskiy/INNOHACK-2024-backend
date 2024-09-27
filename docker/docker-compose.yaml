@@ -51,6 +51,20 @@ services:
     depends_on:
       - postgres
 
+  project:
+    build:
+      context: ../ProjectService
+      dockerfile: ../ProjectService/Dockerfile
+    ports:
+      - "${PROJECT_SERVER_PORT}:${PROJECT_SERVER_PORT}"
+    environment:
+      spring.datasource.url: ${DATABASE_URL_PROJECT}
+      spring.datasource.username: ${POSTGRES_USER}
+      spring.datasource.password: ${POSTGRES_PASSWORD}
+      server.port: ${PROJECT_SERVER_PORT}
+      KAFKA_BOOTSTRAP_SERVER: ${KAFKA_BOOTSTRAP_SERVER}
+    depends_on:
+      - postgres
 
   users:
     build:

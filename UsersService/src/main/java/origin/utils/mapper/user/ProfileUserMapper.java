@@ -13,6 +13,7 @@ public class ProfileUserMapper {
         profileUserDto.setUsername(user.getUsername());
         profileUserDto.setFullName(user.getFullName());
         profileUserDto.setEmail(user.getEmail());
+        profileUserDto.setImage(user.getImage());
         return profileUserDto;
     }
 }
