@@ -80,12 +80,12 @@ public class MainController {
     @DeleteMapping("/{projectId}")
     public GetProjectDto deleteProjectById(@PathVariable long projectId, @RequestHeader(value = "X-Username") String participantUsername) {
         Project project = projectService.getById(projectId);
-
+        GetProjectDto getProjectDto = projectMapper.toDto(project);
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
         projectService.validateUserIsOwner(project, participantUserId);
 
         projectService.deleteById(projectId);
-        return projectMapper.toDto(project);
+        return getProjectDto;
     }
 
     @PostMapping("/{projectId}")
@@ -129,7 +129,7 @@ public class MainController {
     @DeleteMapping("/space/{spaceId}")
     public GetSpaceDto deleteSpaceById(@PathVariable long spaceId, @RequestHeader(value = "X-Username") String participantUsername) {
         Space space = spaceService.getById(spaceId);
-
+        GetSpaceDto getSpaceDto = spaceMapper.toDto(space);
         Project project = projectService.getById(space.getProject().getId());
 
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
@@ -137,7 +137,7 @@ public class MainController {
 
         spaceService.deleteById(spaceId);
 
-        return spaceMapper.toDto(space);
+        return getSpaceDto;
     }
 
     @PostMapping("/{projectId}/space")
@@ -200,6 +200,7 @@ public class MainController {
     @DeleteMapping("/status/{statusId}")
     public GetStatusDto deleteStatusById(@PathVariable long statusId, @RequestHeader(value = "X-Username") String participantUsername) {
         Status status = statusService.getById(statusId);
+        GetStatusDto getStatusDto = statusMapper.toDto(status);
 
         Space space = spaceService.getById(status.getSpace().getId());
         Project project = projectService.getById(space.getProject().getId());
@@ -209,7 +210,7 @@ public class MainController {
 
         statusService.deleteById(statusId);
 
-        return statusMapper.toDto(status);
+        return getStatusDto;
     }
 
     @PostMapping("/{projectId}/space/{spaceId}/status/{statusId}/task")
@@ -243,7 +244,7 @@ public class MainController {
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
         projectService.validateUserIsMember(project, participantUserId);
         Space space = spaceService.getById(spaceId);
-        spaceService.validateUserIsOwner(space, participantUserId);
+        spaceService.validateUserIsOwner(space, project, participantUserId);
         Status status = statusService.getById(statusId);
         List<Task> tasks = status.getTasks();
         Collections.reverse(tasks);
@@ -258,7 +259,7 @@ public class MainController {
     @DeleteMapping("/task/{taskId}")
     public GetTaskDto deleteTaskById(@PathVariable long taskId, @RequestHeader(value = "X-Username") String participantUsername) {
         Task task = taskService.getById(taskId);
-
+        GetTaskDto getTaskDto = taskMapper.toDto(task);
         Space space = spaceService.getById(task.getStatus().getSpace().getId());
 
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
@@ -266,7 +267,7 @@ public class MainController {
 
         taskService.deleteById(taskId);
 
-        return taskMapper.toDto(task);
+        return getTaskDto;
     }
 
     @GetMapping("/task")

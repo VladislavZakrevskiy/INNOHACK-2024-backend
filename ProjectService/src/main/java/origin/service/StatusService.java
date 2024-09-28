@@ -34,12 +34,11 @@ public class StatusService {
         }
     }
 
-    public Status deleteById(long id) {
+    public void deleteById(long id) {
         Status status = statusRepository.findById(id).orElseThrow(
                 () -> new ApiException("Не найден status с данным id", HttpStatus.NOT_FOUND)
         );
         statusRepository.deleteById(id);
-        return status;
     }
 
 }

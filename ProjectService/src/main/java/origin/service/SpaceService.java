@@ -42,11 +42,10 @@ public class SpaceService {
         }
     }
 
-    public Space deleteById(long id) {
+    public void deleteById(long id) {
         Space space = spaceRepository.findById(id).orElseThrow(
                 () -> new ApiException("Не найден space с данным id", HttpStatus.NOT_FOUND)
         );
         spaceRepository.deleteById(id);
-        return space;
     }
 }

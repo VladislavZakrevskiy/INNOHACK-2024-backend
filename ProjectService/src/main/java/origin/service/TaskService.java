@@ -35,11 +35,10 @@ public class TaskService {
         );
     }
 
-    public Task deleteById(long id) {
+    public void deleteById(long id) {
         Task task = taskRepository.findById(id).orElseThrow(
                 () -> new ApiException("Не найдена task с данным id", HttpStatus.NOT_FOUND)
         );
         taskRepository.deleteById(id);
-        return task;
     }
 }

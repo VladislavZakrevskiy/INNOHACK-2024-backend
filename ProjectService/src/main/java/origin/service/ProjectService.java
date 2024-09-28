@@ -39,12 +39,11 @@ public class ProjectService {
         }
     }
 
-    public Project deleteById(long id) {
+    public void deleteById(long id) {
         Project project = projectRepository.findById(id).orElseThrow(
                 () -> new ApiException("Не найден проект с данным id", HttpStatus.NOT_FOUND)
         );
         projectRepository.deleteById(id);
-        return project;
     }
 
 
