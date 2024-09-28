@@ -30,6 +30,8 @@ public class Task {
 
     private Long executorId;
 
+    private String image;
+
     private LocalDateTime createDate;
 
     private LocalDateTime deadlineDate;

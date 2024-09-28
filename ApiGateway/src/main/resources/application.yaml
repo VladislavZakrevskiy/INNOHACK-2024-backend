@@ -125,7 +125,7 @@ spring:
         - id: upload-user-photo
           uri: http://users:8084
           predicates:
-            - Path=/user/uploadImage
+            - Path=/profile/uploadImage
             - Method=POST
 
 server:

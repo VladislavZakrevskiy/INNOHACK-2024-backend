@@ -1,8 +1,10 @@
 package origin.service;
 
+import com.google.cloud.storage.Blob;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import origin.dto.task.GetTaskDto;
 import origin.model.project.Project;
 import origin.model.space.Space;
@@ -10,6 +12,7 @@ import origin.model.status.Status;
 import origin.model.task.Task;
 import origin.repository.StatusRepository;
 import origin.repository.TaskRepository;
+import origin.service.firebase.FirebaseService;
 import origin.utils.exception.ApiException;
 
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.List;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final StatusRepository statusRepository;
+
+    private final FirebaseService firebaseService;
 
     public Task save(Task task){
         return taskRepository.save(task);
@@ -71,5 +76,14 @@ public class TaskService {
                 () -> new ApiException("Не найдена task с данным id", HttpStatus.NOT_FOUND)
         );
         taskRepository.deleteById(id);
+    }
+
+    public String uploadImage(Long taskId, MultipartFile file)  {
+        Task task = getById(taskId);
+        Blob blob = firebaseService.uploadFile(file);
+        String link = blob.getMediaLink();
+        task.setImage(link);
+        save(task);
+        return link;
     }
 }

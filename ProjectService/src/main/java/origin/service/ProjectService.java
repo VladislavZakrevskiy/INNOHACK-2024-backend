@@ -1,12 +1,16 @@
 package origin.service;
 
+import com.google.cloud.storage.Blob;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import origin.dto.project.GetProjectDto;
 import origin.model.project.Project;
 import origin.model.status.Status;
+import origin.model.task.Task;
 import origin.repository.ProjectRepository;
+import origin.service.firebase.FirebaseService;
 import origin.utils.exception.ApiException;
 
 import java.util.List;
@@ -15,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectService {
     private final ProjectRepository projectRepository;
+
+    private final FirebaseService firebaseService;
 
     public List<Project> findAllByMemberId(Long id){
         return projectRepository.findAllByMemberId(id);
@@ -60,6 +66,14 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
+    public String uploadImage(Long projectId, MultipartFile file)  {
+        Project project = getById(projectId);
+        Blob blob = firebaseService.uploadFile(file);
+        String link = blob.getMediaLink();
+        project.setImage(link);
+        save(project);
+        return link;
+    }
 
 
 }

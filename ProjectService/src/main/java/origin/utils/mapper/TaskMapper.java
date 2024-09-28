@@ -30,6 +30,7 @@ public class TaskMapper {
         getTaskDto.setProjectId(e.getStatus().getSpace().getProject().getId());
         getTaskDto.setSpaceId(e.getStatus().getSpace().getId());
         getTaskDto.setStatusId(e.getStatus().getId());
+        getTaskDto.setImage(e.getImage());
         return getTaskDto;
     }
 }

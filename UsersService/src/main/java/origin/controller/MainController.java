@@ -30,7 +30,7 @@ public class MainController {
         return profileUserMapper.toDto(user);
     }
 
-    @PostMapping("/uploadImage")
+    @PostMapping("/profile/uploadImage")
     public ProfileUserDto uploadIMge(@RequestHeader(value = "X-Username") String principalUsername,
                                      @RequestParam(required = true)MultipartFile file) {
         userService.uploadImage(principalUsername, file);

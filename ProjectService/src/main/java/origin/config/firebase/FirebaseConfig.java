@@ -1,4 +1,4 @@
-package origin.firebase;
+package origin.config.firebase;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

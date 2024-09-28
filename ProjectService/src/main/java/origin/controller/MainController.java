@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import origin.client.UserClient;
 import origin.dto.project.AddProjectDto;
 import origin.dto.project.GetProjectDto;
@@ -86,7 +87,6 @@ public class MainController {
         return projectMapper.toDto(projectService.update(projectId, getProjectDto));
     }
 
-    //FIXME
 
     @DeleteMapping("/{projectId}")
     public GetProjectDto deleteProjectById(@PathVariable long projectId, @RequestHeader(value = "X-Username") String participantUsername) {
@@ -328,6 +328,20 @@ public class MainController {
 
         List<Task> forReturnTasks = tasks.size() > limit ? tasks.subList(0, limit) : tasks;
         return forReturnTasks.stream().map(taskMapper::toDto).collect(Collectors.toList());
+    }
+
+    @PostMapping("/task/{taskId}/uploadImage")
+    public GetTaskDto uploadImageTask(@RequestHeader(value = "X-Username") String principalUsername,
+                                     @PathVariable Long taskId, @RequestParam(required = true) MultipartFile file) {
+        taskService.uploadImage(taskId, file);
+        return taskMapper.toDto(taskService.getById(taskId));
+    }
+
+    @PostMapping("/{projectId}/uploadImage")
+    public GetProjectDto uploadImageProject(@RequestHeader(value = "X-Username") String principalUsername,
+                                  @PathVariable Long projectId, @RequestParam(required = true) MultipartFile file) {
+        projectService.uploadImage(projectId, file);
+        return projectMapper.toDto(projectService.getById(projectId));
     }
 
 

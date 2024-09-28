@@ -25,6 +25,8 @@ public class GetTaskDto {
 
     private LocalDateTime deadlineDate;
 
+    private String image;
+
     private Long projectId;
 
     private Long statusId;

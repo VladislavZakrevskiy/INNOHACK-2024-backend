@@ -34,3 +34,4 @@ build/
 ### VS Code ###
 .vscode/
 
+/ProjectService/src/main/resources/messenger-4c416-firebase-adminsdk-4vygk-6e991a8920.json
