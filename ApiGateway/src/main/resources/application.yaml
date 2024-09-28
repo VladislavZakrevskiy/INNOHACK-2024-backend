@@ -98,5 +98,35 @@ spring:
             - Path=/refresh
             - Method=POST
 
+        - id: delete-project
+          uri: http://project:8085
+          predicates:
+            - Path=/project/task/**
+            - Method=DELETE
+
+        - id: delete-space
+          uri: http://project:8085
+          predicates:
+            - Path=/project/space/**
+            - Method=DELETE
+
+        - id: delete-status
+          uri: http://project:8085
+          predicates:
+            - Path=/project/status/**
+            - Method=DELETE
+
+        - id: delete-task
+          uri: http://project:8085
+          predicates:
+            - Path=/project/task/**
+            - Method=DELETE
+
+        - id: upload-user-photo
+          uri: http://users:8084
+          predicates:
+            - Path=/user/uploadImage
+            - Method=POST
+
 server:
   port: ${SERVER_PORT}
