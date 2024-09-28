@@ -32,6 +32,7 @@ public class User {
     private String image;
 
     private String fullName;
+    private String telegramId;
     public User(String password, String username, String email, String fullName) {
         this.password = password;
         this.username = username;

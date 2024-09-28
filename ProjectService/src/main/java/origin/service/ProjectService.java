@@ -29,7 +29,7 @@ public class ProjectService {
 
     public void validateUserIsMember(Project project, Long userId) {
         if (!project.getMembersId().contains(userId)) {
-            throw new ApiException("Вы не являетесь участником данного проекта", HttpStatus.BAD_REQUEST);
+            throw new ApiException("Пользователь " + userId+" не являетесь участником данного проекта", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -38,6 +38,8 @@ public class ProjectService {
             throw new ApiException("Недостаточно прав", HttpStatus.BAD_REQUEST);
         }
     }
+
+
 
 
 

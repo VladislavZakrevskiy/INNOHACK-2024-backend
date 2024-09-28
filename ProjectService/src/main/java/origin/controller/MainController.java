@@ -140,13 +140,17 @@ public class MainController {
                                    @RequestParam(required = true) String usernameToBeAdded){
         Project project = projectService.getById(projectId);
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
+        Long usernameToBaAddedId = userClient.getUserByUsername(usernameToBeAdded).getId();
 
         projectService.validateUserIsMember(project, participantUserId);
         projectService.validateUserIsMember(project, userClient.getUserByUsername(usernameToBeAdded).getId());
         projectService.validateUserIsOwner(project, participantUserId);
 
         Space space = spaceService.getById(spaceId);
-        space.getMembersId().add(userClient.getUserByUsername(usernameToBeAdded).getId());
+        if(space.getMembersId().contains(usernameToBaAddedId)){
+            throw new ApiException("Пользователь уже добавлен в проект", HttpStatus.BAD_REQUEST);
+        }
+        space.getMembersId().add(usernameToBaAddedId);
         return spaceMapper.toDto(spaceService.save(space));
     }
 
@@ -200,7 +204,7 @@ public class MainController {
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
         projectService.validateUserIsMember(project, participantUserId);
         Space space = spaceService.getById(spaceId);
-        spaceService.validateUserIsMember(space, participantUserId);
+        spaceService.validateUserIsOwner(space, participantUserId);
         Status status = statusService.getById(statusId);
         List<Task> tasks = status.getTasks();
         Collections.reverse(tasks);
