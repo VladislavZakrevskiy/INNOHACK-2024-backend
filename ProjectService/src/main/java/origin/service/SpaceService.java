@@ -36,9 +36,17 @@ public class SpaceService {
         }
     }
 
-    public void validateUserIsOwner(Space space, Long userId) {
-        if (!space.getOwnerId().equals(userId)) {
+    public void validateUserIsOwner(Space space, Project project, Long userId) {
+        if (!space.getOwnerId().equals(userId) && !project.getOwnerId().equals(userId)) {
             throw new ApiException("Недостаточно прав", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public Space deleteById(long id) {
+        Space space = spaceRepository.findById(id).orElseThrow(
+                () -> new ApiException("Не найден space с данным id", HttpStatus.NOT_FOUND)
+        );
+        spaceRepository.deleteById(id);
+        return space;
     }
 }

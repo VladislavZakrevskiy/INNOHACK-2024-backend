@@ -31,7 +31,7 @@ public class Project {
     @ElementCollection
     private List<Long> membersId;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Space> spaces;
 
 }
