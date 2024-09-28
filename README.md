@@ -3,7 +3,7 @@
 ## Настройка и запуск
 
 1. **Клонируйте репозиторий:**
-- git clone https://github.com/.git](https://github.com/4ernorusi/backend-
+- git clone https://github.com/4ernorusi/backend-
    
 3. **Соберите проект:**
 - mvn clean package
