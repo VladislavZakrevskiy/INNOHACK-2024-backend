@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -29,7 +32,8 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private String image;
+    @ElementCollection
+    private List<String> image = new ArrayList<>();
 
     private String fullName;
 

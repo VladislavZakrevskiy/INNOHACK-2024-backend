@@ -7,6 +7,7 @@ import origin.model.space.Space;
 import origin.model.status.Status;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,15 @@ public class Task {
 
     private Long executorId;
 
-    private String image;
+    @ElementCollection
+    private List<String> image;
+
+    private String place;
+
+    private String checkpoint;
+
+    @ElementCollection
+    private List<String> labels;
 
     private LocalDateTime createDate;
 

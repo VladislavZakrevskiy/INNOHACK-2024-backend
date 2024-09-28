@@ -5,6 +5,7 @@ import lombok.*;
 import origin.model.space.Space;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,8 @@ public class Project {
 
     private String description;
 
-    private String image;
+    @ElementCollection
+    private List<String> image;
 
     private Long OwnerId;
 

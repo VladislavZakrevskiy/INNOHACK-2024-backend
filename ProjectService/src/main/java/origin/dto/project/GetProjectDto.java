@@ -24,5 +24,5 @@ public class GetProjectDto {
 
     private List<GetSpaceDto> spaces;
 
-    private String image;
+    private List<String> image;
 }

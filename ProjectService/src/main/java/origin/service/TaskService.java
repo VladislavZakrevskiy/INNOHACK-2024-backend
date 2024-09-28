@@ -61,6 +61,9 @@ public class TaskService {
         if (getTaskDto.getOwner() != null && getTaskDto.getOwner().getId() != null) task.setOwnerId(getTaskDto.getOwner().getId());
         if (getTaskDto.getExecutor() != null && getTaskDto.getExecutor().getId() != null) task.setExecutorId(getTaskDto.getExecutor().getId());
         if (getTaskDto.getDeadlineDate() != null) task.setDeadlineDate(getTaskDto.getDeadlineDate());
+        if(getTaskDto.getLabels() != null) task.setLabels(getTaskDto.getLabels());
+        if(getTaskDto.getCheckpoint() != null) task.setCheckpoint(getTaskDto.getCheckpoint());
+        if(getTaskDto.getPlace() != null) task.setPlace(getTaskDto.getPlace());
         if (getTaskDto.getStatusId() != null) {
             Status status = statusRepository.findById(getTaskDto.getStatusId()).orElseThrow(
                     () -> new ApiException("Не найден status с данным id", HttpStatus.NOT_FOUND)
@@ -78,12 +81,11 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public String uploadImage(Long taskId, MultipartFile file)  {
+    public void uploadImage(Long taskId, MultipartFile file)  {
         Task task = getById(taskId);
         Blob blob = firebaseService.uploadFile(file);
         String link = blob.getMediaLink();
-        task.setImage(link);
+        task.getImage().add(link);
         save(task);
-        return link;
     }
 }

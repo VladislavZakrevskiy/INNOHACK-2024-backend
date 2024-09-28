@@ -1,9 +1,11 @@
 package origin.dto.task;
 
+import jakarta.persistence.ElementCollection;
 import lombok.*;
 import origin.dto.user.ProfileUserDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,7 +27,13 @@ public class GetTaskDto {
 
     private LocalDateTime deadlineDate;
 
-    private String image;
+    private List<String> image;
+
+    private String place;
+
+    private String checkpoint;
+
+    private List<String> labels;
 
     private Long projectId;
 
