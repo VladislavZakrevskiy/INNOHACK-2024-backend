@@ -27,6 +27,9 @@ public class TaskMapper {
         getTaskDto.setExecutor(userClient.getUserById(e.getExecutorId()));
         getTaskDto.setCreateDate(e.getCreateDate());
         getTaskDto.setDeadlineDate(e.getDeadlineDate());
+        getTaskDto.setProjectId(e.getStatus().getSpace().getProject().getId());
+        getTaskDto.setSpaceId(e.getStatus().getSpace().getId());
+        getTaskDto.setStatusId(e.getStatus().getId());
         return getTaskDto;
     }
 }

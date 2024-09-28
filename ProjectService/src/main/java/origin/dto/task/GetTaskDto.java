@@ -25,4 +25,10 @@ public class GetTaskDto {
 
     private LocalDateTime deadlineDate;
 
+    private Long projectId;
+
+    private Long statusId;
+
+    private Long spaceId;
+
 }
