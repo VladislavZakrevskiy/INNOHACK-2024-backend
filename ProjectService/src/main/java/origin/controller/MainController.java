@@ -211,5 +211,21 @@ public class MainController {
         return forReturnTasks.stream().map(taskMapper::toDto).collect(Collectors.toList());
     }
 
+    @GetMapping("/task")
+    public List<GetTaskDto> getUserTasks(@RequestHeader(value = "X-Username") String participantUsername,
+                                         @RequestParam(required = false) Integer limit) {
+        Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
+
+        List<Task> tasks = taskService.getByExecutorId(participantUserId);
+        Collections.reverse(tasks);
+
+        if (limit == null) {
+            limit = 10;
+        }
+
+        List<Task> forReturnTasks = tasks.size() > limit ? tasks.subList(0, limit) : tasks;
+        return forReturnTasks.stream().map(taskMapper::toDto).collect(Collectors.toList());
+    }
+
 
 }
