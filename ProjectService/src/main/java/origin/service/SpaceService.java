@@ -3,8 +3,10 @@ package origin.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import origin.dto.space.GetSpaceDto;
 import origin.model.project.Project;
 import origin.model.space.Space;
+import origin.model.status.Status;
 import origin.repository.ProjectRepository;
 import origin.repository.SpaceRepository;
 import origin.utils.exception.ApiException;
@@ -40,6 +42,18 @@ public class SpaceService {
         if (!space.getOwnerId().equals(userId) && !project.getOwnerId().equals(userId)) {
             throw new ApiException("Недостаточно прав", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public Space update(long id, GetSpaceDto getSpaceDto) {
+        Space space = spaceRepository.findById(id).orElseThrow(
+                () -> new ApiException("Не найден space с данным id", HttpStatus.NOT_FOUND)
+        );
+
+        if (getSpaceDto.getName() != null) space.setName(getSpaceDto.getName());
+        if (getSpaceDto.getDescription() != null) space.setDescription(getSpaceDto.getDescription());
+        if (getSpaceDto.getOwner() != null && getSpaceDto.getOwner().getId() != null) space.setOwnerId(getSpaceDto.getOwner().getId());
+
+        return spaceRepository.save(space);
     }
 
     public void deleteById(long id) {
