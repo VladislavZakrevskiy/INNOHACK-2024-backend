@@ -1,5 +1,6 @@
 package origin.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import origin.model.status.Status;
 import origin.model.task.Task;
 import origin.repository.SpaceRepository;
 import origin.repository.StatusRepository;
+import origin.repository.TaskRepository;
 import origin.utils.exception.ApiException;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StatusService {
     private final StatusRepository statusRepository;
+    private final TaskRepository taskRepository;
 
 
     public Status save(Status status){
@@ -45,8 +48,9 @@ public class StatusService {
         return statusRepository.save(status);
     }
 
+    @Transactional
     public void deleteById(long id) {
-        Status status = getById(id);
+        taskRepository.deleteByStatusId(id);
         statusRepository.deleteById(id);
     }
 
