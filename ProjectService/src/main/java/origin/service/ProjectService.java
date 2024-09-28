@@ -14,8 +14,8 @@ import java.util.List;
 public class ProjectService {
     private final ProjectRepository projectRepository;
 
-    public List<Project> getAllProject(){
-        return projectRepository.findAll();
+    public List<Project> findAllByMemberId(Long id){
+        return projectRepository.findAllByMemberId(id);
     }
 
     public Project save(Project project){

@@ -4,14 +4,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import origin.ProjectServiceApplication;
 import origin.client.UserClient;
 import origin.dto.project.AddProjectDto;
 import origin.dto.project.GetProjectDto;
 import origin.dto.space.AddSpaceDto;
 import origin.dto.space.GetSpaceDto;
 import origin.dto.status.AddStatusDto;
-import origin.dto.status.GetStatusDto;
 import origin.dto.task.AddTaskDto;
 import origin.dto.task.GetTaskDto;
 import origin.dto.user.ProfileUserDto;
@@ -45,16 +43,13 @@ public class MainController {
     private final SpaceMapper spaceMapper;
     private final StatusService statusService;
     private final SpaceService spaceService;
-
     private final StatusMapper statusMapper;
-
     private final TaskMapper taskMapper;
-
     private final TaskService taskService;
 
     @GetMapping
     public List<GetProjectDto> getAllProjects(@RequestHeader(value = "X-Username") String username) {
-        return projectService.getAllProject().stream().map(projectMapper::toDto).collect(Collectors.toList());
+        return projectService.findAllByMemberId(userClient.getUserByUsername(username).getId()).stream().map(projectMapper::toDto).collect(Collectors.toList());
     }
 
 
@@ -75,9 +70,7 @@ public class MainController {
     public GetProjectDto getDefiniteProject(@PathVariable long projectId, @RequestHeader(value = "X-Username") String participantUsername){
         Project project = projectService.getById(projectId);
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
-
         projectService.validateUserIsMember(project, participantUserId);
-
         return projectMapper.toDto(project);
     }
 
@@ -88,7 +81,6 @@ public class MainController {
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
 
         projectService.validateUserIsMember(project, participantUserId);
-
         projectService.validateUserIsOwner(project, participantUserId);
 
         Long forAddedUserId = userClient.getUserByUsername(usernameToBeAdded).getId();
@@ -115,7 +107,7 @@ public class MainController {
     }
 
     @GetMapping("/{projectId}/space/{spaceId}")
-    public GetSpaceDto get(@PathVariable long projectId, @PathVariable long spaceId, @RequestHeader(value = "X-Username") String participantUsername){
+    public GetSpaceDto getDefiniteSpace(@PathVariable long projectId, @PathVariable long spaceId, @RequestHeader(value = "X-Username") String participantUsername){
         Project project = projectService.getById(projectId);
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
         projectService.validateUserIsMember(project, participantUserId);
