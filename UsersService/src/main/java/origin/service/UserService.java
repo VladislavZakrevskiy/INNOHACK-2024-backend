@@ -11,6 +11,10 @@ import origin.repository.UserRepository;
 import origin.service.firebase.FirebaseService;
 import origin.utils.exception.ApiException;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -24,6 +28,21 @@ public class UserService {
     public User findUserByUsername(String username) {
         return userRepository.findUserByUsername(username).orElseThrow(()->
                 new ApiException("Пользователь с данным ником не найден", HttpStatus.NOT_FOUND));
+    }
+
+    public List<User> getAll() {
+        return userRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(User::getFullName)
+                        .reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<User> getAllByIdList(List<Long> userIdList) {
+        return userRepository.findAllById(userIdList)
+                .stream()
+                .sorted(Comparator.comparing(User::getFullName).reversed())
+                .collect(Collectors.toList());
     }
 
 
