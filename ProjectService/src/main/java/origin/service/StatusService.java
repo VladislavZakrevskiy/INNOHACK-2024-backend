@@ -35,9 +35,7 @@ public class StatusService {
     }
 
     public void deleteById(long id) {
-        Status status = statusRepository.findById(id).orElseThrow(
-                () -> new ApiException("Не найден status с данным id", HttpStatus.NOT_FOUND)
-        );
+        Status status = getById(id);
         statusRepository.deleteById(id);
     }
 

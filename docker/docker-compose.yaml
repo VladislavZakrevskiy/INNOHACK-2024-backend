@@ -72,7 +72,8 @@ services:
       dockerfile: ../UsersService/Dockerfile
     ports:
       - "${USERS_SERVER_PORT}:${USERS_SERVER_PORT}"
-
+    volumes:
+      - ../UsersService/src/main/resources/messenger-4c416-firebase-adminsdk-4vygk-6e991a8920.json:/usr/src/app/messenger-4c416-firebase-adminsdk-4vygk-6e991a8920.json
     environment:
       PATH_TO_FIRE: /usr/src/app/messenger-4c416-firebase-adminsdk-4vygk-6e991a8920.json
       spring.datasource.url: ${DATABASE_URL_USERS}
@@ -81,7 +82,6 @@ services:
       server.port: ${USERS_SERVER_PORT}
       KAFKA_BOOTSTRAP_SERVER: ${KAFKA_BOOTSTRAP_SERVER}
       NAME_BUCKET: ${NAME_BUCKET}
-      PATH_TO_DEFAULT_AVATAR: ${PATH_TO_DEFAULT_AVATAR}
     depends_on:
       - postgres
 
