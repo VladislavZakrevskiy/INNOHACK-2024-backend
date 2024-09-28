@@ -31,13 +31,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public String uploadImage(String username, MultipartFile file)  {
+    public void uploadImage(String username, MultipartFile file)  {
         User user = findUserByUsername(username);
         Blob blob = firebaseService.uploadFile(file);
         String link = blob.getMediaLink();
-        user.setImage(link);
+        user.getImage().add(link);
         save(user);
-        return link;
     }
 
 }

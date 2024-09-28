@@ -66,13 +66,12 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-    public String uploadImage(Long projectId, MultipartFile file)  {
+    public void uploadImage(Long projectId, MultipartFile file)  {
         Project project = getById(projectId);
         Blob blob = firebaseService.uploadFile(file);
         String link = blob.getMediaLink();
-        project.setImage(link);
+        project.getImage().add(link);
         save(project);
-        return link;
     }
 
 

@@ -2,6 +2,8 @@ package origin.dto.user;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +18,6 @@ public class ProfileUserDto {
 
     private String fullName;
 
-    private String image;
+    private List<String> image;
 
 }
