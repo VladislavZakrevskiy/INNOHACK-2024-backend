@@ -6,6 +6,7 @@ import origin.model.project.Project;
 import origin.model.space.Space;
 import origin.model.status.Status;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,10 @@ public class Task {
     private Long OwnerId;
 
     private Long executorId;
+
+    private LocalDateTime createDate;
+
+    private LocalDateTime deadlineDate;
 
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")

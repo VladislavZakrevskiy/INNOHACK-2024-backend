@@ -25,7 +25,8 @@ public class TaskMapper {
         getTaskDto.setDescription(e.getDescription());
         getTaskDto.setOwner(userClient.getUserById(e.getOwnerId()));
         getTaskDto.setExecutor(userClient.getUserById(e.getExecutorId()));
-
+        getTaskDto.setCreateDate(e.getCreateDate());
+        getTaskDto.setDeadlineDate(e.getDeadlineDate());
         return getTaskDto;
     }
 }

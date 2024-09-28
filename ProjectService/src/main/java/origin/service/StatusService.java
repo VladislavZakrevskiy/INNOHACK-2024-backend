@@ -24,7 +24,7 @@ public class StatusService {
 
     public Status getById(Long id){
         return statusRepository.findById(id).orElseThrow(() ->
-                new ApiException("Нет таски с данным ID", HttpStatus.NOT_FOUND));
+                new ApiException("Нет статуса с данным ID", HttpStatus.NOT_FOUND));
     }
 
 

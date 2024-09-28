@@ -27,6 +27,7 @@ import origin.utils.mapper.SpaceMapper;
 import origin.utils.mapper.StatusMapper;
 import origin.utils.mapper.TaskMapper;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -182,12 +183,31 @@ public class MainController {
         Task task = new Task();
         task.setTitle(addTaskDto.getName());
         task.setDescription(addTaskDto.getDescription());
+        task.setDeadlineDate(addTaskDto.getDeadlineDate());
+        task.setCreateDate(LocalDateTime.now());
         task.setStatus(status);
         task.setOwnerId(participantUserId);
         task.setExecutorId(participantUserId);
         return taskMapper.toDto(taskService.save(task));
     }
 
-
-
+    @GetMapping("/{projectId}/space/{spaceId}/status/{statusId}/task")
+    public List<GetTaskDto> getAllTasks(@PathVariable long projectId, @PathVariable long spaceId,
+                                 @PathVariable long statusId,
+                                 @RequestHeader(value = "X-Username") String participantUsername,
+                                 @RequestParam(required = false) Integer limit){
+        Project project = projectService.getById(projectId);
+        Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
+        projectService.validateUserIsMember(project, participantUserId);
+        Space space = spaceService.getById(spaceId);
+        spaceService.validateUserIsMember(space, participantUserId);
+        Status status = statusService.getById(statusId);
+        List<Task> tasks = status.getTasks();
+        Collections.reverse(tasks);
+        if(limit==null){
+            limit = 10;
+        }
+        List<Task> forReturnTasks = tasks.size() > limit ? tasks.subList(0, limit) : tasks;
+        return forReturnTasks.stream().map(taskMapper::toDto).collect(Collectors.toList());
+    }
 }

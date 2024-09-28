@@ -19,4 +19,5 @@ public class GetStatusDto {
     private String name;
 
     private List<GetTaskDto> tasks;
+
 }

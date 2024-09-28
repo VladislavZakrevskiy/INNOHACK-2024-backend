@@ -14,7 +14,7 @@ spring:
             - Path=/project
             - Method=POST
 
-        - id: all-chats
+        - id: all-projects
           uri: http://project:8085
           predicates:
             - Path=/project
@@ -25,46 +25,73 @@ spring:
           predicates:
             - Path=/project/{projectId}
             - Method=GET
+
         - id: add-new-member
           uri: http://project:8085
           predicates:
             - Path=/project/{projectId}
             - Method=POST
-        - id: add-participant
-          uri: http://chats:8085
+
+        - id: get-all-space
+          uri: http://project:8085
           predicates:
-            - Path=/chats/**
-            - Method=PUT
-        - id: all-participant
-          uri: http://chats:8085
-          predicates:
-            - Path=/chats/{id}/participants
+            - Path=/project/{projectId}/space
             - Method=GET
-        - id: addAvatar
-          uri: http://users:8084
+
+        - id: create-space
+          uri: http://project:8085
           predicates:
-            - Path=/addAvatar
+            - Path=/project/{projectId}/space
             - Method=POST
+
+        - id: get-definite-space
+          uri: http://project:8085
+          predicates:
+            - Path=/project/{projectId}/space/{spaceId}
+            - Method=GET
+
+        - id: add-new-member-in-space
+          uri: http://project:8085
+          predicates:
+            - Path=/project/{projectId}/space/{spaceId}
+            - Method=POST
+
+        - id: create-status
+          uri: http://project:8085
+          predicates:
+            - Path=/project/{projectId}/space/{spaceId}/status
+            - Method=POST
+
+        - id: create-task
+          uri: http://project:8085
+          predicates:
+            - Path=/project/{projectId}/space/{spaceId}/status/{statusId}/task
+            - Method=POST
+
+        - id: get-all-tasks
+          uri: http://project:8085
+          predicates:
+            - Path=/project/{projectId}/space/{spaceId}/status/{statusId}/task
+            - Method=GET
+
         - id: profile
           uri: http://users:8084
           predicates:
             - Path=/profile
             - Method=GET
+
         - id: registration
           uri: http://auth:8089
           predicates:
             - Path=/registration
             - Method=POST
+
         - id: authorization
           uri: http://auth:8089
           predicates:
             - Path=/auth
             - Method=POST
-        - id: edit-user
-          uri: http://auth:8089
-          predicates:
-            - Path=/editUser
-            - Method=PUT
+
         - id: refresh-token
           uri: http://auth:8089
           predicates:
