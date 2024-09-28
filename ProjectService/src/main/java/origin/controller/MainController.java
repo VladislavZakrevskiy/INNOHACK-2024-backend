@@ -76,6 +76,17 @@ public class MainController {
         return projectMapper.toDto(project);
     }
 
+    @PutMapping("/{projectId}")
+    public GetProjectDto updateProjectById(@PathVariable long projectId, @RequestHeader(value = "X-Username") String participantUsername, @RequestBody GetProjectDto getProjectDto) {
+        Project project = projectService.getById(projectId);
+
+        Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
+        projectService.validateUserIsOwner(project, participantUserId);
+
+        return projectMapper.toDto(projectService.update(projectId, getProjectDto));
+    }
+
+    //FIXME
 
     @DeleteMapping("/{projectId}")
     public GetProjectDto deleteProjectById(@PathVariable long projectId, @RequestHeader(value = "X-Username") String participantUsername) {
@@ -125,7 +136,18 @@ public class MainController {
         return spaceMapper.toDto(spaceService.getById(spaceId));
     }
 
-    //FIX
+    @PutMapping("/space/{spaceId}")
+    public GetSpaceDto updateSpaceById(@PathVariable long spaceId, @RequestHeader(value = "X-Username") String participantUsername, @RequestBody GetSpaceDto getSpaceDto) {
+        Status status = statusService.getById(spaceId);
+        Space space = spaceService.getById(status.getSpace().getId());
+        Project project = projectService.getById(status.getSpace().getProject().getId());
+
+        Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
+//        spaceService.validateUserIsOwner(space, project, participantUserId);
+
+        return spaceMapper.toDto(spaceService.update(spaceId, getSpaceDto));
+    }
+
     @DeleteMapping("/space/{spaceId}")
     public GetSpaceDto deleteSpaceById(@PathVariable long spaceId, @RequestHeader(value = "X-Username") String participantUsername) {
         Space space = spaceService.getById(spaceId);
@@ -197,6 +219,18 @@ public class MainController {
         return statusMapper.toDto(status);
     }
 
+    @PutMapping("/status/{statusId}")
+    public GetStatusDto updateStatusById(@PathVariable long statusId, @RequestHeader(value = "X-Username") String participantUsername, @RequestBody GetStatusDto statusDto) {
+        Status status = statusService.getById(statusId);
+        Space space = spaceService.getById(status.getSpace().getId());
+        Project project = projectService.getById(space.getProject().getId());
+
+        Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
+        statusService.validateUserIsOwner(space, project, participantUserId);
+
+        return statusMapper.toDto(statusService.update(statusId, statusDto));
+    }
+
     @DeleteMapping("/status/{statusId}")
     public GetStatusDto deleteStatusById(@PathVariable long statusId, @RequestHeader(value = "X-Username") String participantUsername) {
         Status status = statusService.getById(statusId);
@@ -252,6 +286,18 @@ public class MainController {
         }
         List<Task> forReturnTasks = tasks.size() > limit ? tasks.subList(0, limit) : tasks;
         return forReturnTasks.stream().map(taskMapper::toDto).collect(Collectors.toList());
+    }
+
+    @PutMapping("/task/{taskId}")
+    public GetTaskDto updateTaskById(@PathVariable long taskId, @RequestHeader(value = "X-Username") String participantUsername, @RequestBody GetTaskDto getTaskDto) {
+        Task task = taskService.getById(taskId);
+        Space space = spaceService.getById(task.getStatus().getSpace().getId());
+        Project project = projectService.getById(task.getStatus().getSpace().getProject().getId());
+
+        Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
+        taskService.validateUserIsMember(space, project, participantUserId);
+
+        return taskMapper.toDto(taskService.update(taskId, getTaskDto));
     }
 
     @DeleteMapping("/task/{taskId}")

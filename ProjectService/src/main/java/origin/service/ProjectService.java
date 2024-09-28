@@ -3,7 +3,9 @@ package origin.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import origin.dto.project.GetProjectDto;
 import origin.model.project.Project;
+import origin.model.status.Status;
 import origin.repository.ProjectRepository;
 import origin.utils.exception.ApiException;
 
@@ -37,6 +39,18 @@ public class ProjectService {
         if (!project.getOwnerId().equals(userId)) {
             throw new ApiException("Недостаточно прав", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public Project update(long id, GetProjectDto getProjectDto) {
+        Project project = projectRepository.findById(id).orElseThrow(
+                () -> new ApiException("Не найден project с данным id", HttpStatus.NOT_FOUND)
+        );
+
+        if (getProjectDto.getName() != null) project.setName(getProjectDto.getName());
+        if (getProjectDto.getImage() != null) project.setImage(getProjectDto.getImage());
+        if (getProjectDto.getOwner() != null && getProjectDto.getOwner().getId() != null) project.setOwnerId(getProjectDto.getOwner().getId());
+
+        return projectRepository.save(project);
     }
 
     public void deleteById(long id) {

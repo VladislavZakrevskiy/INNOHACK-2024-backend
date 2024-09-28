@@ -3,6 +3,7 @@ package origin.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import origin.dto.status.GetStatusDto;
 import origin.model.project.Project;
 import origin.model.space.Space;
 import origin.model.status.Status;
@@ -32,6 +33,16 @@ public class StatusService {
         if (!space.getOwnerId().equals(userId) && !project.getOwnerId().equals(userId)) {
             throw new ApiException("Недостаточно прав", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public Status update(long id, GetStatusDto getStatusDto) {
+        Status status = statusRepository.findById(id).orElseThrow(
+                () -> new ApiException("Не найден status с данным id", HttpStatus.NOT_FOUND)
+        );
+
+        if (getStatusDto.getName() != null) status.setName(getStatusDto.getName());
+
+        return statusRepository.save(status);
     }
 
     public void deleteById(long id) {
