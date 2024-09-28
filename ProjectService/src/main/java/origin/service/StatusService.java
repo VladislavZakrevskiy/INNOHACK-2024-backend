@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import origin.model.project.Project;
 import origin.model.space.Space;
 import origin.model.status.Status;
+import origin.model.task.Task;
 import origin.repository.SpaceRepository;
 import origin.repository.StatusRepository;
 import origin.utils.exception.ApiException;
@@ -27,6 +28,18 @@ public class StatusService {
                 new ApiException("Нет статуса с данным ID", HttpStatus.NOT_FOUND));
     }
 
+    public void validateUserIsOwner(Space space, Project project, Long userId) {
+        if (!space.getOwnerId().equals(userId) && !project.getOwnerId().equals(userId)) {
+            throw new ApiException("Недостаточно прав", HttpStatus.BAD_REQUEST);
+        }
+    }
 
+    public Status deleteById(long id) {
+        Status status = statusRepository.findById(id).orElseThrow(
+                () -> new ApiException("Не найден status с данным id", HttpStatus.NOT_FOUND)
+        );
+        statusRepository.deleteById(id);
+        return status;
+    }
 
 }

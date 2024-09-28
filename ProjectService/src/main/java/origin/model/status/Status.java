@@ -24,7 +24,7 @@ public class Status {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "status")
+    @OneToMany(mappedBy = "status", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Task> tasks;
 
     @ManyToOne
