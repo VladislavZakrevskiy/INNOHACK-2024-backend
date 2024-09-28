@@ -29,7 +29,7 @@ public class SpaceMapper {
         getSpaceDto.setOwner(userClient.getUserById(e.getOwnerId()));
         getSpaceDto.setMembers(e.getMembersId().stream().map(userClient::getUserById).collect(Collectors.toList()));
         getSpaceDto.setStatuses(e.getStatus().stream().map(statusMapper::toDto).collect(Collectors.toList()));
-        getSpaceDto.setImage(e.getImage());
+
 
         return getSpaceDto;
     }

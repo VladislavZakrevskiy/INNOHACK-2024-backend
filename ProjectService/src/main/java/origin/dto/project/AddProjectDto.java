@@ -9,4 +9,5 @@ import lombok.*;
 @ToString
 public class AddProjectDto {
     private String name;
+    private String description;
 }

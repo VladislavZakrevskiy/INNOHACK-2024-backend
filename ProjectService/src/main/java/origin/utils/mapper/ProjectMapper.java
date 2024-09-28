@@ -26,6 +26,7 @@ public class ProjectMapper {
         getProjectDto.setSpaces(e.getSpaces().stream().map(spaceMapper::toDto).collect(Collectors.toList()));
         getProjectDto.setOwner(userClient.getUserById(e.getOwnerId()));
         getProjectDto.setMembers(e.getMembersId().stream().map(userClient::getUserById).collect(Collectors.toList()));
+        getProjectDto.setImage(e.getImage());
 
         return getProjectDto;
     }

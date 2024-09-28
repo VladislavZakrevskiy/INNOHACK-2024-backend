@@ -24,5 +24,4 @@ public class GetSpaceDto {
 
     private List<GetStatusDto> statuses;
 
-    private String image;
 }

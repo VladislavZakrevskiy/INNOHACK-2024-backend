@@ -23,4 +23,6 @@ public class GetProjectDto {
     private List<ProfileUserDto> members;
 
     private List<GetSpaceDto> spaces;
+
+    private String image;
 }

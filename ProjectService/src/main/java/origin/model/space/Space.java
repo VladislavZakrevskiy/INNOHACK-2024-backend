@@ -30,7 +30,6 @@ public class Space {
     @ElementCollection
     private List<Long> membersId;
 
-    private String image;
 
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")

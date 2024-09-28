@@ -12,7 +12,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {
         log.info("Exception {} {}", methodKey, response);
-        if(methodKey.contains("getUserByUsernameOrEmail")){
+        if(methodKey.contains("getUserByUsername")){
             return new ApiException("Пользователь с данным ником или почтой не найден", HttpStatus.BAD_REQUEST);
         }
         return new Exception();

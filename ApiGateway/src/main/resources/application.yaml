@@ -20,15 +20,15 @@ spring:
             - Path=/project
             - Method=GET
 
-        - id: get-definite-chat
-          uri: http://chats:8085
+        - id: get-definite-project
+          uri: http://project:8085
           predicates:
-            - Path=/chats/**
+            - Path=/project/{projectId}
             - Method=GET
-        - id: send-message
-          uri: http://chats:8085
+        - id: add-new-member
+          uri: http://project:8085
           predicates:
-            - Path=/chats/**
+            - Path=/project/{projectId}
             - Method=POST
         - id: add-participant
           uri: http://chats:8085

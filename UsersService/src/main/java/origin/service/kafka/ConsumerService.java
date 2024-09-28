@@ -22,7 +22,7 @@ public class ConsumerService {
     public void saveListener(RegistrationUserDto registrationUserDto) {
         User user = registrationUserMapper.toEntity(registrationUserDto);
         userService.save(user);
-        log.info(registrationUserDto.getUsername() + " добавлен в users");
+        log.info(registrationUserDto.getUsername() + " добавлен");
     }
 
 }

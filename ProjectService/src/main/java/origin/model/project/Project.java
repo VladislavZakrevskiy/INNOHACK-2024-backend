@@ -22,6 +22,10 @@ public class Project {
     @Column(nullable = false)
     private String name;
 
+    private String description;
+
+    private String image;
+
     private Long OwnerId;
 
     @ElementCollection

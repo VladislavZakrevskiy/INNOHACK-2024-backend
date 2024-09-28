@@ -26,4 +26,19 @@ public class ProjectService {
         return projectRepository.findById(id).orElseThrow(() ->
                 new ApiException("Не найден проект с данным id", HttpStatus.NOT_FOUND));
     }
+
+    public void validateUserIsMember(Project project, Long userId) {
+        if (!project.getMembersId().contains(userId)) {
+            throw new ApiException("Вы не являетесь участником данного проекта", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public void validateUserIsOwner(Project project, Long userId) {
+        if (!project.getOwnerId().equals(userId)) {
+            throw new ApiException("Недостаточно прав", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
 }
