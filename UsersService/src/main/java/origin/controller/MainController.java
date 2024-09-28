@@ -9,6 +9,10 @@ import origin.model.user.User;
 import origin.service.UserService;
 import origin.utils.mapper.user.ProfileUserMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "UserService")
@@ -37,6 +41,28 @@ public class MainController {
         return profileUserMapper.toDto(userService.findUserByUsername(principalUsername));
     }
 
+    @GetMapping
+    public List<ProfileUserDto> getAllUsers() {
+        return userService.getAll()
+                .stream()
+                .map(profileUserMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
+    @GetMapping("/byid")
+    List<ProfileUserDto> getAllUsersByIdList(@RequestParam List<Long> userIdList) {
+        List<ProfileUserDto> profileUserDtoList;
+
+        if (userIdList.size() > 0) {
+            profileUserDtoList = userService.getAllByIdList(userIdList)
+                    .stream()
+                    .map(profileUserMapper::toDto)
+                    .collect(Collectors.toList());
+        } else {
+            profileUserDtoList = new ArrayList<>();
+        }
+
+        return profileUserDtoList;
+    }
 
 }
