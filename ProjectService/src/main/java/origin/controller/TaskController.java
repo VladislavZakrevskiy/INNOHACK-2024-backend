@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import origin.client.UserClient;
 import origin.dto.task.AddTaskDto;
 import origin.dto.task.GetTaskDto;
+import origin.dto.task.UpdateTaskDto;
 import origin.model.project.Project;
 import origin.model.space.Space;
 import origin.model.status.Status;
@@ -52,7 +53,7 @@ public class TaskController {
     }
 
     @PutMapping("/task/{taskId}")
-    public GetTaskDto updateTaskById(@PathVariable long taskId, @RequestHeader(value = "X-Username") String participantUsername, @RequestBody GetTaskDto getTaskDto) {
+    public GetTaskDto updateTaskById(@PathVariable long taskId, @RequestHeader(value = "X-Username") String participantUsername, @RequestBody UpdateTaskDto updateTaskDto) {
         Task task = taskService.getById(taskId);
         Space space = spaceService.getById(task.getStatus().getSpace().getId());
         Project project = projectService.getById(task.getStatus().getSpace().getProject().getId());
@@ -60,7 +61,7 @@ public class TaskController {
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
         taskService.validateUserIsMember(space, project, participantUserId);
 
-        return taskMapper.toDto(taskService.update(taskId, getTaskDto));
+        return taskMapper.toDto(taskService.update(taskId, updateTaskDto));
     }
 
     @GetMapping("/{projectId}/space/{spaceId}/status/{statusId}/task")
