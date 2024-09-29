@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import origin.dto.task.GetTaskDto;
+import origin.dto.task.UpdateTaskDto;
 import origin.model.project.Project;
 import origin.model.space.Space;
 import origin.model.status.Status;
@@ -51,21 +52,21 @@ public class TaskService {
         );
     }
 
-    public Task update(long id, GetTaskDto getTaskDto) {
+    public Task update(long id, UpdateTaskDto updateTaskDto) {
         Task task = taskRepository.findById(id).orElseThrow(
                 () -> new ApiException("Не найдена task с данным id", HttpStatus.NOT_FOUND)
         );
 
-        if (getTaskDto.getTitle() != null) task.setTitle(getTaskDto.getTitle());
-        if (getTaskDto.getDescription() != null) task.setDescription(getTaskDto.getDescription());
-        if (getTaskDto.getOwner() != null && getTaskDto.getOwner().getId() != null) task.setOwnerId(getTaskDto.getOwner().getId());
-        if (getTaskDto.getExecutor() != null && getTaskDto.getExecutor().getId() != null) task.setExecutorId(getTaskDto.getExecutor().getId());
-        if (getTaskDto.getDeadlineDate() != null) task.setDeadlineDate(getTaskDto.getDeadlineDate());
-        if(getTaskDto.getLabels() != null) task.setLabels(getTaskDto.getLabels());
-        if(getTaskDto.getCheckpoint() != null) task.setCheckpoint(getTaskDto.getCheckpoint());
-        if(getTaskDto.getPlace() != null) task.setPlace(getTaskDto.getPlace());
-        if (getTaskDto.getStatusId() != null) {
-            Status status = statusRepository.findById(getTaskDto.getStatusId()).orElseThrow(
+        if (updateTaskDto.getTitle() != null) task.setTitle(updateTaskDto.getTitle());
+        if (updateTaskDto.getDescription() != null) task.setDescription(updateTaskDto.getDescription());
+        if (updateTaskDto.getOwnerId() != null) task.setOwnerId(updateTaskDto.getOwnerId());
+        if (updateTaskDto.getExecutorId() != null) task.setExecutorId(updateTaskDto.getExecutorId());
+        if (updateTaskDto.getDeadlineDate() != null) task.setDeadlineDate(updateTaskDto.getDeadlineDate());
+        if(updateTaskDto.getLabels() != null) task.setLabels(updateTaskDto.getLabels());
+        if(updateTaskDto.getCheckpoint() != null) task.setCheckpoint(updateTaskDto.getCheckpoint());
+        if(updateTaskDto.getPlace() != null) task.setPlace(updateTaskDto.getPlace());
+        if (updateTaskDto.getStatusId() != null) {
+            Status status = statusRepository.findById(updateTaskDto.getStatusId()).orElseThrow(
                     () -> new ApiException("Не найден status с данным id", HttpStatus.NOT_FOUND)
             );
             task.setStatus(status);
