@@ -33,7 +33,7 @@ public class User {
     private String email;
 
     @ElementCollection
-    private List<String> image = new ArrayList<>();
+    private List<String> image;
 
     private String fullName;
 

@@ -43,6 +43,7 @@ public class Task {
 
     private LocalDateTime createDate;
 
+    @Column(nullable = false)
     private LocalDateTime deadlineDate;
 
     @ManyToOne

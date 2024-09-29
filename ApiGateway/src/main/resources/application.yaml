@@ -104,6 +104,12 @@ spring:
             - Path=/project/task/**
             - Method=DELETE
 
+        - id: update-task
+          uri: http://project:8085
+          predicates:
+            - Path=/project/task/**
+            - Method=PUT
+
         - id: delete-space
           uri: http://project:8085
           predicates:
@@ -127,6 +133,44 @@ spring:
           predicates:
             - Path=/profile/uploadImage
             - Method=POST
+
+        - id: upload-project-photo
+          uri: http://project:8085
+          predicates:
+            - Path=/project/{projectId}/uploadImage
+            - Method=POST
+
+        - id: upload-task-photo
+          uri: http://project:8085
+          predicates:
+            - Path=/project/task/{taskId}/uploadImage
+            - Method=POST
+
+        - id: user-search
+          uri: http://project:8085
+          predicates:
+            - Path=/project/user/search
+            - Method=POST
+
+        - id: user-search-space
+          uri: http://project:8085
+          predicates:
+            - Path=/project/user/search/byspace/{spaceId}
+            - Method=POST
+
+        - id: user-search-proj
+          uri: http://project:8085
+          predicates:
+            - Path=/project/user/search/byproj/{projectId}
+            - Method=POST
+
+        - id: user-search-byid
+          uri: http://project:8085
+          predicates:
+            - Path=/project/user/search/byid/{userId}
+            - Method=POST
+
+
 
 server:
   port: ${SERVER_PORT}
