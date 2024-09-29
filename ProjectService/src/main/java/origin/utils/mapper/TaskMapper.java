@@ -31,6 +31,9 @@ public class TaskMapper {
         getTaskDto.setSpaceId(e.getStatus().getSpace().getId());
         getTaskDto.setStatusId(e.getStatus().getId());
         getTaskDto.setImage(e.getImage());
+        getTaskDto.setPlace(e.getPlace());
+        getTaskDto.setCheckpoint(e.getCheckpoint());
+        getTaskDto.setLabels(e.getLabels());
         return getTaskDto;
     }
 }

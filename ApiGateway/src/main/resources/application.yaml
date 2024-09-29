@@ -101,31 +101,31 @@ spring:
         - id: delete-project
           uri: http://project:8085
           predicates:
-            - Path=/project/task/**
+            - Path=/project/{projectId}
             - Method=DELETE
 
         - id: update-task
           uri: http://project:8085
           predicates:
-            - Path=/project/task/**
+            - Path=/project/task/{taskId}
             - Method=PUT
 
         - id: delete-space
           uri: http://project:8085
           predicates:
-            - Path=/project/space/**
+            - Path=/project/space/{spaceId}
             - Method=DELETE
 
         - id: delete-status
           uri: http://project:8085
           predicates:
-            - Path=/project/status/**
+            - Path=/project/status/{statusId}
             - Method=DELETE
 
         - id: delete-task
           uri: http://project:8085
           predicates:
-            - Path=/project/task/**
+            - Path=/project/task/{taskId}
             - Method=DELETE
 
         - id: upload-user-photo

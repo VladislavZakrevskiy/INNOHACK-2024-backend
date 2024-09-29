@@ -60,6 +60,7 @@ services:
     volumes:
       - ../ProjectService/src/main/resources/messenger-4c416-firebase-adminsdk-4vygk-6e991a8920.json:/prj/src/app/messenger-4c416-firebase-adminsdk-4vygk-6e991a8920.json
     environment:
+      GMAIL_ACCESS: ${GMAIL_ACCESS}
       PATH_TO_FIRE: /prj/src/app/messenger-4c416-firebase-adminsdk-4vygk-6e991a8920.json
       spring.datasource.url: ${DATABASE_URL_PROJECT}
       spring.datasource.username: ${POSTGRES_USER}

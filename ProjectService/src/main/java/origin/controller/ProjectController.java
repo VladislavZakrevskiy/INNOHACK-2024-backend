@@ -76,7 +76,6 @@ public class ProjectController {
         GetProjectDto getProjectDto = projectMapper.toDto(project);
         Long participantUserId = userClient.getUserByUsername(participantUsername).getId();
         projectService.validateUserIsOwner(project, participantUserId);
-
         projectService.deleteById(projectId);
         return getProjectDto;
     }

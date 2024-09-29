@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import origin.client.UserClient;
 import origin.dto.task.GetTaskDto;
 import origin.dto.task.UpdateTaskDto;
 import origin.model.project.Project;
@@ -13,6 +14,7 @@ import origin.model.status.Status;
 import origin.model.task.Task;
 import origin.repository.StatusRepository;
 import origin.repository.TaskRepository;
+import origin.service.email.EmailService;
 import origin.service.firebase.FirebaseService;
 import origin.utils.exception.ApiException;
 
@@ -23,8 +25,12 @@ import java.util.List;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final StatusRepository statusRepository;
-
     private final FirebaseService firebaseService;
+    private final ProjectService projectService;
+    private final EmailService emailService;
+    private final UserClient userClient;
+
+    private final SpaceService spaceService;
 
     public Task save(Task task){
         return taskRepository.save(task);
@@ -60,7 +66,24 @@ public class TaskService {
         if (updateTaskDto.getTitle() != null) task.setTitle(updateTaskDto.getTitle());
         if (updateTaskDto.getDescription() != null) task.setDescription(updateTaskDto.getDescription());
         if (updateTaskDto.getOwnerId() != null) task.setOwnerId(updateTaskDto.getOwnerId());
-        if (updateTaskDto.getExecutorId() != null) task.setExecutorId(updateTaskDto.getExecutorId());
+        if (updateTaskDto.getExecutorId() != null) {
+            task.setExecutorId(updateTaskDto.getExecutorId());
+            Project project = task.getStatus().getSpace().getProject();
+            Space space = task.getStatus().getSpace();
+            if(!project.getMembersId().contains(updateTaskDto.getExecutorId())){
+                project.getMembersId().add(updateTaskDto.getExecutorId());
+                projectService.save(project);
+            }
+            if(!space.getMembersId().contains(updateTaskDto.getExecutorId())){
+                space.getMembersId().add(updateTaskDto.getExecutorId());
+                spaceService.save(space);
+            }
+
+            emailService.sendSimpleEmail(userClient.getUserById(updateTaskDto.getExecutorId()).getEmail()
+                    , "Вас назначили исполнителем задачи " + task.getId(),
+                    task.getTitle() + " : " + task.getDescription()
+                    );
+        }
         if (updateTaskDto.getDeadlineDate() != null) task.setDeadlineDate(updateTaskDto.getDeadlineDate());
         if(updateTaskDto.getLabels() != null) task.setLabels(updateTaskDto.getLabels());
         if(updateTaskDto.getCheckpoint() != null) task.setCheckpoint(updateTaskDto.getCheckpoint());
